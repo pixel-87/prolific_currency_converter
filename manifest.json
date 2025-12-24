@@ -34,7 +34,8 @@
     "open_in_tab": true
   },
   "action": {
-    "default_title": "Prolific Currency Converter"
+    "default_title": "Prolific Currency Converter",
+    "default_popup": "options.html"
   }
   ,
   "browser_specific_settings": {
