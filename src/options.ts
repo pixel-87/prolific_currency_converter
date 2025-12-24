@@ -1,7 +1,11 @@
 // Load saved currency preference
+interface CurrencyResult {
+    targetCurrency?: string;
+}
+
 browser.storage.sync.get("targetCurrency", (result) => {
-  const select = document.getElementById("targetCurrency") as HTMLSelectElement;
-  select.value = result.targetCurrency || "GBP";
+    const select = document.getElementById("targetCurrency") as HTMLSelectElement;
+    select.value = result.targetCurrency || "GBP";
 });
 
 // Save on change
