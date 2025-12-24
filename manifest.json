@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Prolific Currency Converter",
+  "version": "0.0.1",
+  "description": "Convert Prolific study rewards to your preferred currency",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://api.exchangerate.host/*",
+    "https://*.prolific.com/*",
+    "https://*.prolific.co/*"
+  ],
+  "background": {
+    "scripts": [
+      "worker.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.prolific.com/*",
+        "https://*.prolific.co/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "Prolific Currency Converter"
+  }
+  ,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "prolific-currency-converter@local"
+    }
+  }
+}

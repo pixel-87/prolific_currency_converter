@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prolific Currency Converter - Options</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+          sans-serif;
+        padding: 20px;
+        max-width: 500px;
+        margin: 0 auto;
+        background: #f5f5f5;
+      }
+
+      h1 {
+        color: #333;
+        margin-top: 0;
+        font-size: 24px;
+      }
+
+      .option-group {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #555;
+      }
+
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        background: white;
+        cursor: pointer;
+      }
+
+      select:hover {
+        border-color: #999;
+      }
+
+      select:focus {
+        outline: none;
+        border-color: #4285f4;
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+      }
+
+      .status {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        display: none;
+      }
+
+      .status.show {
+        display: block;
+      }
+
+      .status.success {
+        background: #c8e6c9;
+        color: #2e7d32;
+      }
+
+      .info {
+        background: #e3f2fd;
+        color: #1565c0;
+        padding: 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Prolific Currency Converter</h1>
+
+    <div class="info">
+      Converts USD study rewards to your preferred currency. Exchange rates are cached for 24 hours.
+    </div>
+
+    <div class="option-group">
+      <label for="targetCurrency">Target Currency:</label>
+      <select id="targetCurrency">
+        <option value="GBP">GBP (British Pound)</option>
+        <option value="USD">USD (US Dollar)</option>
+        <option value="EUR">EUR (Euro)</option>
+        <option value="JPY">JPY (Japanese Yen)</option>
+        <option value="CAD">CAD (Canadian Dollar)</option>
+        <option value="AUD">AUD (Australian Dollar)</option>
+        <option value="CHF">CHF (Swiss Franc)</option>
+        <option value="CNY">CNY (Chinese Yuan)</option>
+        <option value="INR">INR (Indian Rupee)</option>
+        <option value="MXN">MXN (Mexican Peso)</option>
+        <option value="SGD">SGD (Singapore Dollar)</option>
+      </select>
+      <div class="status success" id="status">✓ Settings saved</div>
+    </div>
+
+    <script src="options.js"></script>
+  </body>
+</html>
