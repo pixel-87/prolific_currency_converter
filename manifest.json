@@ -7,7 +7,8 @@
     "storage"
   ],
   "host_permissions": [
-    "https://api.exchangerate.host/*",
+    "https://api.frankfurter.app/*",
+    "https://open.er-api.com/*",
     "https://*.prolific.com/*",
     "https://*.prolific.co/*"
   ],
