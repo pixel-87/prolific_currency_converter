@@ -1,4 +1,4 @@
-{ lib, buildNpmPackage }:
+{ lib, buildNpmPackage, manifestFile ? ./manifest.json }:
 buildNpmPackage {
   pname = "prolific_currency_converter";
   version = "0.1.0";
@@ -6,6 +6,11 @@ buildNpmPackage {
   src = ./.;
 
   npmDepsHash = "sha256-3m3mGeHSi19xsjWymZnrBHEFF1qUoQwR4SvpWcT6vT4=";
+
+  npmBuildPhase = ''
+    export MANIFEST_PATH=${manifestFile}
+    npm run build
+  '';
 
   installPhase = ''
     mkdir -p $out/extension

@@ -4,6 +4,7 @@
   "description": "Browser extension to convert Prolific rewards to your preferred currency",
   "scripts": {
     "build": "node build-extension.js",
+    "build:firefox": "node build-extension.js --firefox",
     "dev": "npm run build -- --watch"
   },
   "author": "isabelroses",

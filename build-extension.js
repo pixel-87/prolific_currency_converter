@@ -48,7 +48,10 @@ async function build() {
     }
 
     // Copy static files
-    fs.copyFileSync("manifest.json", path.join(outdir, "manifest.json"));
+    const manifestSource = process.env.MANIFEST_PATH
+      ? path.resolve(process.env.MANIFEST_PATH)
+      : path.join(__dirname, "manifest.json");
+    fs.copyFileSync(manifestSource, path.join(outdir, "manifest.json"));
     fs.copyFileSync("src/options.html", path.join(outdir, "options.html"));
 
     console.log("✓ Extension built successfully!");

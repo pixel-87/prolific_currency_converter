@@ -15,15 +15,22 @@
         );
     in
     {
-      packages = forAllSystems (pkgs: {
-        example = pkgs.callPackage ./default.nix { };
-        default = self.packages.${pkgs.stdenv.hostPlatform.system}.example;
+      packages = forAllSystems (pkgs: let
+        firefoxPkg = pkgs.callPackage ./default.nix { manifestFile = ./manifest.json; };
+        chromePkg = pkgs.callPackage ./default.nix { manifestFile = ./manifest.chrome.json; };
+      in {
+        firefox = firefoxPkg;
+        chrome = chromePkg;
+        default = firefoxPkg;
       });
 
       devShells = forAllSystems (pkgs: {
         default = pkgs.callPackage ./shell.nix { };
       });
 
-      overlays.default = final: _: { example = final.callPackage ./default.nix { }; };
+      overlays.default = final: _: {
+        firefox = final.callPackage ./default.nix { manifestFile = ./manifest.json; };
+        chrome = final.callPackage ./default.nix { manifestFile = ./manifest.chrome.json; };
+      };
     };
 }
