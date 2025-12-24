@@ -20,7 +20,7 @@ buildNpmPackage {
   meta = {
     description = "A browser extension for prolific to convert currencies";
     homepage = "https://github.com/pixel-87/prolific_currency_converter";
-    license = lib.licenses.mit;
+    license = lib.licenses.gpl3Plus;
     maintainers = with lib.maintainers; [ ];
   };
 }
