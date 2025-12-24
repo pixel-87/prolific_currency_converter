@@ -1,3 +1,4 @@
+import browser from "webextension-polyfill";
 import type { ConversionResponse, ExchangeRateCache } from "./types";
 
 const CACHE_KEY = "exchange_rate_cache";
@@ -127,7 +128,7 @@ async function convertCurrency(
 }
 
 // Listen for messages from content script
-browser.runtime.onMessage.addListener(async (request) => {
+browser.runtime.onMessage.addListener(async (request: any) => {
   console.log("[Worker] Received message:", request);
   if (request.action === "convert") {
     const result = await convertCurrency(request.amount, request.from, request.to);

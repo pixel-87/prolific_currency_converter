@@ -1,3 +1,5 @@
+import browser from "webextension-polyfill";
+
 const LOG_PREFIX = "[Prolific CC]";
 
 console.info(`${LOG_PREFIX} Content script loaded at`, window.location.href);
@@ -19,7 +21,7 @@ const CURRENCY_SYMBOLS: Record<string, string> = {
 const CURRENCY_CODES = Object.keys(CURRENCY_SYMBOLS);
 
 async function getTargetCurrency(): Promise<string> {
-  const stored = await browser.storage.sync.get("targetCurrency");
+  const stored = await browser.storage.sync.get("targetCurrency") as { targetCurrency?: string };
   return stored.targetCurrency || "GBP";
 }
 
@@ -74,7 +76,7 @@ async function convertAndInject(element: Element, targetCurrency: string): Promi
       amount: parsed.amount,
       from: parsed.currency,
       to: targetCurrency,
-    });
+    }) as { success: boolean; value: number | null };
 
     if (response && response.success && response.value !== null) {
       const converted = formatCurrency(response.value, targetCurrency);

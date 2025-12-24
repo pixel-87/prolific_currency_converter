@@ -1,9 +1,12 @@
+import browser from "webextension-polyfill";
+
 // Load saved currency preference
 interface CurrencyResult {
     targetCurrency?: string;
 }
 
-browser.storage.sync.get("targetCurrency").then((result) => {
+browser.storage.sync.get("targetCurrency").then((res) => {
+    const result = res as CurrencyResult;
     const select = document.getElementById("targetCurrency") as HTMLSelectElement;
     select.value = result.targetCurrency || "GBP";
 });
