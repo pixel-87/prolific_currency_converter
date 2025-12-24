@@ -5,7 +5,7 @@ buildNpmPackage {
 
   src = ./.;
 
-  npmDepsHash = lib.fakeHash;
+  npmDepsHash = "sha256-3m3mGeHSi19xsjWymZnrBHEFF1qUoQwR4SvpWcT6vT4=";
 
   installPhase = ''
     mkdir -p $out/extension
