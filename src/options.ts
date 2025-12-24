@@ -3,7 +3,7 @@ interface CurrencyResult {
     targetCurrency?: string;
 }
 
-browser.storage.sync.get("targetCurrency", (result) => {
+browser.storage.sync.get("targetCurrency").then((result) => {
     const select = document.getElementById("targetCurrency") as HTMLSelectElement;
     select.value = result.targetCurrency || "GBP";
 });
