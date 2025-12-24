@@ -13,9 +13,7 @@
     "https://*.prolific.co/*"
   ],
   "background": {
-    "scripts": [
-      "worker.js"
-    ]
+    "service_worker": "worker.js"
   },
   "content_scripts": [
     {

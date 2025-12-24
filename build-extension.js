@@ -13,7 +13,7 @@ fs.mkdirSync(outdir, { recursive: true });
 const isWatch = process.argv.includes("--watch");
 
 const commonConfig = {
-  bundle: false,
+  bundle: true,
   target: "es2020",
 };
 
