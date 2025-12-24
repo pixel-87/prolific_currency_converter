@@ -99,6 +99,9 @@ async function convertAndInject(element: Element, targetCurrency: string): Promi
   }
 }
 
+let scanScheduled = false;
+const SCAN_DELAY_MS = 400;
+
 async function processRewardElements(): Promise<void> {
   console.info(`${LOG_PREFIX} Starting reward scan`);
   try {
@@ -120,15 +123,24 @@ async function processRewardElements(): Promise<void> {
   }
 }
 
+function scheduleRewardScan(): void {
+  if (scanScheduled) return;
+  scanScheduled = true;
+  setTimeout(() => {
+    scanScheduled = false;
+    void processRewardElements();
+  }, SCAN_DELAY_MS);
+}
+
 // Run on page load
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
     console.info(`${LOG_PREFIX} DOMContentLoaded`);
-    void processRewardElements();
+    scheduleRewardScan();
   });
 } else {
   console.info(`${LOG_PREFIX} Document ready; processing immediately`);
-  void processRewardElements();
+  scheduleRewardScan();
 }
 
 // Listen for storage changes (user updates target currency in options)
@@ -139,13 +151,8 @@ browser.storage.onChanged.addListener((changes) => {
 });
 
 // Watch for dynamically added reward elements (pagination, infinite scroll)
-const observer = new MutationObserver((mutations) => {
-  for (const mutation of mutations) {
-    if (mutation.addedNodes.length > 0) {
-      void processRewardElements();
-      break;
-    }
-  }
+const observer = new MutationObserver(() => {
+  scheduleRewardScan();
 });
 observer.observe(document.body, {
   childList: true,
