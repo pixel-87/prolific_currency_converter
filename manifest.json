@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Prolific Currency Converter",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "Convert Prolific study rewards to your preferred currency",
   "permissions": [
     "storage"
@@ -55,7 +55,13 @@
   ,
   "browser_specific_settings": {
     "gecko": {
-      "id": "prolific-currency-converter@local"
+      "id": "prolific-currency-converter@local",
+      "strict_min_version": "142.0",
+        "data_collection_permissions": {
+          "required": ["none"]
+      }
     }
-  }
+  },
+  "optional_permissions": [],
+  "host_permissions_description": "Access to Prolific and exchange rate API endpoints to fetch and convert study rewards."
 }

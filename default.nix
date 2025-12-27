@@ -1,4 +1,4 @@
-{ lib, buildNpmPackage, manifestFile ? ./manifest.json, archiveName ? "prolific-extension.zip", zip }:
+{ lib, buildNpmPackage, zip }:
 buildNpmPackage {
   pname = "prolific_currency_converter";
   version = "0.1.1";
@@ -9,18 +9,43 @@ buildNpmPackage {
 
   nativeBuildInputs = [ zip ];
 
-  npmBuildPhase = ''
-    export MANIFEST_PATH=${manifestFile}
+  dontNpmBuild = true;
+
+  buildPhase = ''
+    runHook preBuild
+    
+    # Build Firefox version
+    export MANIFEST_PATH=${./manifest.json}
     npm run build
+    mv dist firefox-build
+    
+    # Build Chrome version
+    export MANIFEST_PATH=${./manifest.chrome.json}
+    npm run build
+    mv dist chrome-build
+    
+    runHook postBuild
   '';
 
   installPhase = ''
-    mkdir -p $out/extension
-    cp -r dist/* $out/extension/
+    mkdir -p $out
     
-    # Create archive for distribution
-    cd $out/extension
-    zip -r $out/${archiveName} .
+    # Copy Firefox build
+    mkdir -p $out/firefox
+    cp -r firefox-build/. $out/firefox/
+    
+    # Copy Chrome build
+    mkdir -p $out/chrome
+    cp -r chrome-build/. $out/chrome/
+    
+    # Create Firefox XPI
+    cd $out/firefox
+    zip -r $out/prolific-firefox.xpi .
+    cd -
+    
+    # Create Chrome ZIP
+    cd $out/chrome
+    zip -r $out/prolific-chrome.zip .
     cd -
   '';
 

@@ -16,18 +16,9 @@
     in
     {
       packages = forAllSystems (pkgs: let
-        firefoxPkg = pkgs.callPackage ./default.nix { 
-          manifestFile = ./manifest.json;
-          archiveName = "prolific-firefox.xpi";
-        };
-        chromePkg = pkgs.callPackage ./default.nix { 
-          manifestFile = ./manifest.chrome.json;
-          archiveName = "prolific-chrome.zip";
-        };
+        pkg = pkgs.callPackage ./default.nix { };
       in {
-        firefox = firefoxPkg;
-        chrome = chromePkg;
-        default = firefoxPkg;
+        default = pkg;
       });
 
       devShells = forAllSystems (pkgs: {
@@ -35,14 +26,7 @@
       });
 
       overlays.default = final: _: {
-        firefox = final.callPackage ./default.nix { 
-          manifestFile = ./manifest.json;
-          archiveName = "prolific-firefox.xpi";
-        };
-        chrome = final.callPackage ./default.nix { 
-          manifestFile = ./manifest.chrome.json;
-          archiveName = "prolific-chrome.zip";
-        };
+        prolific_currency_converter = final.callPackage ./default.nix { };
       };
     };
 }
