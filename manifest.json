@@ -6,6 +6,16 @@
   "permissions": [
     "storage"
   ],
+  "icons": {
+    "16": "assets/icon-16.png",
+    "32": "assets/icon-32.png",
+    "48": "assets/icon-48.png",
+    "64": "assets/icon-64.png",
+    "96": "assets/icon-96.png",
+    "128": "assets/icon-128.png",
+    "256": "assets/icon-256.png",
+    "512": "assets/icon-512.png"
+  },
   "host_permissions": [
     "https://api.frankfurter.app/*",
     "https://open.er-api.com/*",
@@ -33,7 +43,14 @@
   },
   "action": {
     "default_title": "Prolific Currency Converter",
-    "default_popup": "options.html"
+    "default_popup": "options.html",
+    "default_icon": {
+      "16": "assets/icon-16.png",
+      "32": "assets/icon-32.png",
+      "48": "assets/icon-48.png",
+      "64": "assets/icon-64.png",
+      "128": "assets/icon-128.png"
+    }
   }
   ,
   "browser_specific_settings": {

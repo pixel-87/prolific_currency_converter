@@ -1,7 +1,7 @@
 { lib, buildNpmPackage, manifestFile ? ./manifest.json }:
 buildNpmPackage {
   pname = "prolific_currency_converter";
-  version = "0.1.0";
+  version = "0.1.1";
 
   src = ./.;
 

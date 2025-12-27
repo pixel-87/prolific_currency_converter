@@ -53,6 +53,28 @@ async function build() {
       : path.join(__dirname, "manifest.json");
     fs.copyFileSync(manifestSource, path.join(outdir, "manifest.json"));
     fs.copyFileSync("src/options.html", path.join(outdir, "options.html"));
+    // Copy assets directory (icons, screenshots, etc.) if present
+    const assetsSrc = path.join(__dirname, "assets");
+    const assetsDest = path.join(outdir, "assets");
+    if (fs.existsSync(assetsSrc)) {
+      // prefer fs.cpSync when available (Node 16+)
+      if (typeof fs.cpSync === "function") {
+        fs.cpSync(assetsSrc, assetsDest, { recursive: true });
+      } else {
+        // fallback: simple recursive copy
+        const copyRecursive = (src, dest) => {
+          if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+          for (const name of fs.readdirSync(src)) {
+            const s = path.join(src, name);
+            const d = path.join(dest, name);
+            const stat = fs.statSync(s);
+            if (stat.isDirectory()) copyRecursive(s, d);
+            else fs.copyFileSync(s, d);
+          }
+        };
+        copyRecursive(assetsSrc, assetsDest);
+      }
+    }
 
     console.log("✓ Extension built successfully!");
     console.log(`✓ Output directory: ${path.resolve(outdir)}`);
