@@ -16,8 +16,14 @@
     in
     {
       packages = forAllSystems (pkgs: let
-        firefoxPkg = pkgs.callPackage ./default.nix { manifestFile = ./manifest.json; };
-        chromePkg = pkgs.callPackage ./default.nix { manifestFile = ./manifest.chrome.json; };
+        firefoxPkg = pkgs.callPackage ./default.nix { 
+          manifestFile = ./manifest.json;
+          archiveName = "prolific-firefox.xpi";
+        };
+        chromePkg = pkgs.callPackage ./default.nix { 
+          manifestFile = ./manifest.chrome.json;
+          archiveName = "prolific-chrome.zip";
+        };
       in {
         firefox = firefoxPkg;
         chrome = chromePkg;
@@ -29,8 +35,14 @@
       });
 
       overlays.default = final: _: {
-        firefox = final.callPackage ./default.nix { manifestFile = ./manifest.json; };
-        chrome = final.callPackage ./default.nix { manifestFile = ./manifest.chrome.json; };
+        firefox = final.callPackage ./default.nix { 
+          manifestFile = ./manifest.json;
+          archiveName = "prolific-firefox.xpi";
+        };
+        chrome = final.callPackage ./default.nix { 
+          manifestFile = ./manifest.chrome.json;
+          archiveName = "prolific-chrome.zip";
+        };
       };
     };
 }
