@@ -32,7 +32,8 @@ jobs:
           web-ext sign \
             --api-key="${{ secrets.AMO_API_KEY }}" \
             --api-secret="${{ secrets.AMO_API_SECRET }}" \
-            --source-dir=./result/firefox
+            --source-dir=./result/firefox \
+            --channel=listed
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
