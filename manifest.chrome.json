@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Prolific Currency Converter",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Convert Prolific study rewards to your preferred currency",
   "permissions": [
     "storage"
