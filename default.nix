@@ -1,7 +1,7 @@
 { lib, buildNpmPackage, zip }:
 buildNpmPackage {
   pname = "prolific_currency_converter";
-  version = "0.1.1";
+  version = (builtins.fromJSON (builtins.readFile ./package.json)).version;
 
   src = ./.;
 
