@@ -1,6 +1,6 @@
 {
   "name": "prolific-currency-converter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Browser extension to convert Prolific rewards to your preferred currency",
   "scripts": {
     "prebuild": "node ./scripts/sync-version.js",
