@@ -5,7 +5,7 @@ buildNpmPackage {
 
   src = ./.;
 
-  npmDepsHash = "sha256-2+F3c/FEXp0YkxFUbw8Waq5rw1qcmcp0Wr1JrViA1g0=";
+  npmDepsHash = "sha256-w/tpy0jWkxPFusWsZtRqiCF2HyjoqcErGJ5Hnz+K+lw=";
 
   nativeBuildInputs = [ zip ];
 
