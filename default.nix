@@ -1,11 +1,11 @@
 { lib, buildNpmPackage, zip }:
 buildNpmPackage {
   pname = "prolific_currency_converter";
-  version = (builtins.fromJSON (builtins.readFile ./package.json)).version;
+  version = "0.1.2";
 
   src = ./.;
 
-  npmDepsHash = "sha256-3m3mGeHSi19xsjWymZnrBHEFF1qUoQwR4SvpWcT6vT4=";
+  npmDepsHash = "sha256-2+F3c/FEXp0YkxFUbw8Waq5rw1qcmcp0Wr1JrViA1g0=";
 
   nativeBuildInputs = [ zip ];
 
