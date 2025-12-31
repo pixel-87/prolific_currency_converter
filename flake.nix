@@ -16,17 +16,17 @@
     in
     {
       packages = forAllSystems (pkgs: let
-        pkg = pkgs.callPackage ./default.nix { };
+        pkg = pkgs.callPackage ./nix/default.nix { };
       in {
         default = pkg;
       });
 
       devShells = forAllSystems (pkgs: {
-        default = pkgs.callPackage ./shell.nix { };
+        default = pkgs.callPackage ./nix/shell.nix { };
       });
 
       overlays.default = final: _: {
-        prolific_currency_converter = final.callPackage ./default.nix { };
+        prolific_currency_converter = final.callPackage ./nix/default.nix { };
       };
     };
 }

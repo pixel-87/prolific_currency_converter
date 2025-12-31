@@ -3,7 +3,7 @@ buildNpmPackage {
   pname = "prolific_currency_converter";
   version = "0.1.2";
 
-  src = ./.;
+  src = ../. ;
 
   npmDepsHash = "sha256-w/tpy0jWkxPFusWsZtRqiCF2HyjoqcErGJ5Hnz+K+lw=";
 
@@ -15,12 +15,12 @@ buildNpmPackage {
     runHook preBuild
     
     # Build Firefox version
-    export MANIFEST_PATH=${./manifest.json}
+    export MANIFEST_PATH=${../manifest.json}
     npm run build
     mv dist firefox-build
     
     # Build Chrome version
-    export MANIFEST_PATH=${./manifest.chrome.json}
+    export MANIFEST_PATH=${../manifest.chrome.json}
     npm run build
     mv dist chrome-build
     

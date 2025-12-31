@@ -20,6 +20,11 @@ jobs:
       - name: Build extension
         run: nix build
 
+      - name: Prepare artifacts
+        run: |
+          mkdir -p ./artifacts/firefox
+          cp -r ./result/firefox/* ./artifacts/firefox/
+
       - name: Extract version from tag
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
@@ -32,8 +37,9 @@ jobs:
           web-ext sign \
             --api-key="${{ secrets.AMO_API_KEY }}" \
             --api-secret="${{ secrets.AMO_API_SECRET }}" \
-            --source-dir=./result/firefox \
-            --channel=listed
+            --source-dir=./artifacts/firefox \
+            --channel=listed \
+            --artifacts-dir=./artifacts
         env:
           WEB_EXT_API_KEY: ${{ secrets.AMO_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.AMO_API_SECRET }}
@@ -41,6 +47,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./result/prolific-firefox.xpi
+          files: ./artifacts/*.xpi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
