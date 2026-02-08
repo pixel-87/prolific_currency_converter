@@ -4,6 +4,9 @@ Converts currencies on prolific to a target currency.
 
 This is all vibecoded since I don't know TS, I was just annoyed and wanted a solution so I did this in an evening.
 
+DISCLAIMER:
+I am not affiliate with prolific, so it's on you using it. I've been using it for months though now and have had no issues.
+
 ## Usage
 
 - Develop/test inside the Nix shell: `nix develop` and then `npm run build` (or `npm run build -- --watch`).
