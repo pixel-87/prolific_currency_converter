@@ -65,6 +65,5 @@
       }
     }
   },
-  "optional_permissions": [],
-  "host_permissions_description": "Access to Prolific and exchange rate API endpoints to fetch and convert study rewards."
+  "optional_permissions": []
 }

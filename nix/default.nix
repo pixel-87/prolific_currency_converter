@@ -5,7 +5,7 @@ buildNpmPackage {
 
   src = ../. ;
 
-  npmDepsHash = "sha256-xRMnL/ziE2Zn98Bs1Cx7/ms+T3xY7/ehNotUqE6lfD4=";
+  npmDepsHash = "sha256-5tvvv0vCaLdNWk3MJwz4SAWBrdwUgZs1AGGLwetGu90=";
 
   nativeBuildInputs = [ zip ];
 
@@ -15,12 +15,12 @@ buildNpmPackage {
     runHook preBuild
     
     # Build Firefox version
-    export MANIFEST_PATH=${../manifest.json}
+    export MANIFEST_PATH=${../public/manifest.json}
     npm run build
     mv dist firefox-build
     
     # Build Chrome version
-    export MANIFEST_PATH=${../manifest.chrome.json}
+    export MANIFEST_PATH=${../public/manifest.chrome.json}
     npm run build
     mv dist chrome-build
     

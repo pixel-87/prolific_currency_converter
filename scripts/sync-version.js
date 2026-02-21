@@ -3,7 +3,7 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const pkgPath = path.join(root, 'package.json');
-const manifests = ['manifest.json', 'manifest.chrome.json'];
+const manifests = ['public/manifest.json', 'public/manifest.chrome.json'];
 
 const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 const version = pkg.version;

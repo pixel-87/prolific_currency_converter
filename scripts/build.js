@@ -50,11 +50,11 @@ async function build() {
     // Copy static files
     const manifestSource = process.env.MANIFEST_PATH
       ? path.resolve(process.env.MANIFEST_PATH)
-      : path.join(__dirname, "manifest.json");
+      : path.join(__dirname, "../public/manifest.json");
     fs.copyFileSync(manifestSource, path.join(outdir, "manifest.json"));
-    fs.copyFileSync("src/options.html", path.join(outdir, "options.html"));
+    fs.copyFileSync("public/options.html", path.join(outdir, "options.html"));
     // Copy assets directory (icons, screenshots, etc.) if present
-    const assetsSrc = path.join(__dirname, "assets");
+    const assetsSrc = path.join(__dirname, "../public/assets");
     const assetsDest = path.join(outdir, "assets");
     if (fs.existsSync(assetsSrc)) {
       // prefer fs.cpSync when available (Node 16+)

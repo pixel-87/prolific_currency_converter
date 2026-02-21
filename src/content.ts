@@ -1,128 +1,17 @@
 import browser from "webextension-polyfill";
+import { getTargetCurrency } from "./utils/storage";
+import { processRewardElements } from "./utils/dom";
 
 const LOG_PREFIX = "[Prolific CC]";
-
-console.info(`${LOG_PREFIX} Content script loaded at`, window.location.href);
-// Currency symbols map
-const CURRENCY_SYMBOLS: Record<string, string> = {
-  USD: "$",
-  GBP: "£",
-  EUR: "€",
-  JPY: "¥",
-  CAD: "$",
-  AUD: "$",
-  CHF: "Fr",
-  CNY: "¥",
-  INR: "₹",
-  MXN: "$",
-  SGD: "$",
-};
-
-const CURRENCY_CODES = Object.keys(CURRENCY_SYMBOLS);
-
-async function getTargetCurrency(): Promise<string> {
-  const stored = await browser.storage.sync.get("targetCurrency") as { targetCurrency?: string };
-  return stored.targetCurrency || "GBP";
-}
-
-function parseCurrencyAmount(text: string): { currency: string; amount: number } | null {
-  // Match patterns like "$3.00" or "£21.43"
-  const match = text.match(/([^\d]?)([\d,]+\.?\d*)/);
-  if (!match) return null;
-
-  const symbol = match[1]?.trim() || "$";
-  const amountStr = match[2].replace(/,/g, "");
-  const amount = parseFloat(amountStr);
-
-  // Find currency code by symbol
-  let currency = "USD";
-  for (const [code, sym] of Object.entries(CURRENCY_SYMBOLS)) {
-    if (sym === symbol) {
-      currency = code;
-      break;
-    }
-  }
-
-  return isNaN(amount) ? null : { currency, amount };
-}
-
-function formatCurrency(amount: number, currencyCode: string): string {
-  const symbol = CURRENCY_SYMBOLS[currencyCode] || currencyCode;
-  return `${symbol}${amount.toFixed(2)}`;
-}
-
-async function convertAndInject(element: Element, targetCurrency: string): Promise<void> {
-  const text = element.textContent?.trim();
-  if (!text) return;
-
-  // Avoid processing the same node repeatedly
-  const el = element as HTMLElement;
-  if (el.dataset.ccProcessed === "1" || text.includes(" / ")) {
-    return;
-  }
-
-  const parsed = parseCurrencyAmount(text);
-  if (!parsed || parsed.currency === targetCurrency) return;
-
-  // Request conversion from background worker (Firefox uses Promise-based API)
-  try {
-    console.debug(
-      `${LOG_PREFIX} Converting`,
-      { amount: parsed.amount, from: parsed.currency, to: targetCurrency },
-      `for text="${text}"`
-    );
-    const response = await browser.runtime.sendMessage({
-      action: "convert",
-      amount: parsed.amount,
-      from: parsed.currency,
-      to: targetCurrency,
-    }) as { success: boolean; value: number | null };
-
-    if (response && response.success && response.value !== null) {
-      const converted = formatCurrency(response.value, targetCurrency);
-      const original = text.split(" •")[0];
-      const newText = `${original} / ${converted}`;
-      element.textContent = newText;
-      el.dataset.ccProcessed = "1";
-      console.debug(`${LOG_PREFIX} Injected conversion`, { original, converted: newText });
-    } else {
-      const original = text.split(" /")[0];
-      const newText = `${original} / ??`;
-      element.textContent = newText;
-      el.dataset.ccProcessed = "1";
-      console.warn(`${LOG_PREFIX} Conversion unavailable; injected ??`, { original });
-    }
-  } catch (err) {
-    const original = text.split(" /")[0];
-    const newText = `${original} / ??`;
-    element.textContent = newText;
-    el.dataset.ccProcessed = "1";
-    console.error(`${LOG_PREFIX} Messaging error; injected ??`, err);
-  }
-}
-
-let scanScheduled = false;
 const SCAN_DELAY_MS = 400;
 
-async function processRewardElements(): Promise<void> {
-  console.info(`${LOG_PREFIX} Starting reward scan`);
-  try {
-    const targetCurrency = await getTargetCurrency();
+console.info(`${LOG_PREFIX} Content script loaded at`, window.location.href);
 
-    // Find all reward amount elements
-    const rewardElements = document.querySelectorAll(
-      '[data-testid="study-tag-reward"], [data-testid="study-tag-reward-per-hour"]'
-    );
+let scanScheduled = false;
 
-    console.info(`${LOG_PREFIX} Found reward elements:`, rewardElements.length);
-
-    for (const element of rewardElements) {
-      console.debug(`${LOG_PREFIX} Processing element`, element);
-      await convertAndInject(element, targetCurrency);
-    }
-  } catch (err) {
-    console.error(`${LOG_PREFIX} processRewardElements failed`, err);
-  }
+async function runScan(): Promise<void> {
+  const targetCurrency = await getTargetCurrency();
+  await processRewardElements(targetCurrency);
 }
 
 function scheduleRewardScan(): void {
@@ -130,7 +19,7 @@ function scheduleRewardScan(): void {
   scanScheduled = true;
   setTimeout(() => {
     scanScheduled = false;
-    void processRewardElements();
+    void runScan();
   }, SCAN_DELAY_MS);
 }
 
@@ -148,7 +37,7 @@ if (document.readyState === "loading") {
 // Listen for storage changes (user updates target currency in options)
 browser.storage.onChanged.addListener((changes) => {
   if (changes.targetCurrency) {
-    void processRewardElements();
+    void runScan();
   }
 });
 
@@ -156,6 +45,7 @@ browser.storage.onChanged.addListener((changes) => {
 const observer = new MutationObserver(() => {
   scheduleRewardScan();
 });
+
 observer.observe(document.body, {
   childList: true,
   subtree: true,
